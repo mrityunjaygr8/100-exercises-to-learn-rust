@@ -1,7 +1,22 @@
 // TODO: Implement the `From` trait for the `WrappingU32` type to make `example` compile.
 
+use std::ops::Deref;
+
 pub struct WrappingU32 {
     value: u32,
+}
+
+impl Deref for WrappingU32 {
+    type Target = u32;
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
+
+impl From<u32> for WrappingU32 {
+    fn from(value: u32) -> Self {
+        WrappingU32 { value }
+    }
 }
 
 fn example() {
