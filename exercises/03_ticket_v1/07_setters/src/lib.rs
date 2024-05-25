@@ -10,27 +10,45 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 characters");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 characters");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
-
-        Ticket {
+        let ticket = Ticket {
             title,
             description,
             status,
+        };
+
+        ticket.is_valid();
+        return ticket;
+    }
+
+    fn is_valid(&self) {
+        if self.title.is_empty() {
+            panic!("Title cannot be empty");
         }
+        if self.title.len() > 50 {
+            panic!("Title cannot be longer than 50 characters");
+        }
+        if self.description.is_empty() {
+            panic!("Description cannot be empty");
+        }
+        if self.description.len() > 500 {
+            panic!("Description cannot be longer than 500 characters");
+        }
+        if self.status != "To-Do" && self.status != "In Progress" && self.status != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
+        }
+    }
+
+    pub fn set_status(&mut self, status: String) {
+        self.status = status;
+        self.is_valid()
+    }
+    pub fn set_description(&mut self, description: String) {
+        self.description = description;
+        self.is_valid()
+    }
+    pub fn set_title(&mut self, title: String) {
+        self.title = title;
+        self.is_valid()
     }
 
     pub fn title(&self) -> &String {
