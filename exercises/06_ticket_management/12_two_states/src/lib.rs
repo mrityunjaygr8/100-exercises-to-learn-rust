@@ -37,6 +37,18 @@ pub enum Status {
     Done,
 }
 
+impl From<usize> for TicketId {
+    fn from(value: usize) -> Self {
+        TicketId(value.try_into().unwrap())
+    }
+}
+
+impl Into<usize> for TicketId {
+    fn into(self) -> usize {
+        self.0.try_into().unwrap()
+    }
+}
+
 impl TicketStore {
     pub fn new() -> Self {
         Self {
@@ -44,8 +56,21 @@ impl TicketStore {
         }
     }
 
-    pub fn add_ticket(&mut self, ticket: Ticket) {
+    pub fn get(&self, idx: TicketId) -> Option<&Ticket> {
+        let i: usize = idx.into();
+        Some(&self.tickets[i])
+    }
+
+    pub fn add_ticket(&mut self, ticket_draft: TicketDraft) -> TicketId {
+        let id: TicketId = self.tickets.len().into();
+        let ticket = Ticket {
+            title: ticket_draft.title,
+            status: Status::ToDo,
+            description: ticket_draft.description,
+            id,
+        };
         self.tickets.push(ticket);
+        id
     }
 }
 
